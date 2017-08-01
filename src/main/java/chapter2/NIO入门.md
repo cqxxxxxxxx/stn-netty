@@ -21,3 +21,16 @@ InputStream.read(byte b[]) throws IOException{
 */
 OutputStream.write(byte b[]) throws IOException{}
 ```
+
+
+### JDK NIO API
+
+ Selector 多路复用器  
+ 监听事件,比如SelectionKey.OP_ACCEPT官方文档片段如下
+```
+ If the selector detects that the corresponding server-socket channel is ready to accept
+ another connection, or has an error pending, then it will add
+ <tt>OP_ACCEPT</tt> to the key's ready set and add the key to its
+ selected-key set.
+
+```
