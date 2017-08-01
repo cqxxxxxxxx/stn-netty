@@ -1,6 +1,6 @@
-package chapter2.timeserver.block.with_pool;
+package chapter2.block.with_pool;
 
-import chapter2.timeserver.block.TimeServerHandler;
+import chapter2.block.TimeServerHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;

@@ -1,4 +1,4 @@
-package chapter2.timeserver.block;
+package chapter2.block;
 
 import java.io.BufferedReader;
 import java.io.IOException;

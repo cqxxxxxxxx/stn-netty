@@ -15,7 +15,7 @@ InputStream.read(byte b[]) throws IOException{
 
 
 /**
-*  This method will block unit
+*  This method will block unitl
 *  the bytes are actually written.
 *  调用write写输出流的时候，会被阻塞直到所有字节写入完毕。
 */
