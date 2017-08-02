@@ -34,3 +34,5 @@ OutputStream.write(byte b[]) throws IOException{}
  selected-key set.
 
 ```
+
+ NIO 跟 AIO的性能差距不是很大
