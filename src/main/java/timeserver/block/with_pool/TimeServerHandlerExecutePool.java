@@ -1,4 +1,4 @@
-package chapter2.block.with_pool;
+package timeserver.block.with_pool;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;

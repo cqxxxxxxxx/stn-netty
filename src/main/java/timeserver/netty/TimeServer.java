@@ -1,4 +1,4 @@
-package chapter3;
+package timeserver.netty;
 
 
 import io.netty.bootstrap.ServerBootstrap;

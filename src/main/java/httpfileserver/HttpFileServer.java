@@ -1,4 +1,4 @@
-package httpserver;
+package httpfileserver;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -17,7 +17,7 @@ import io.netty.handler.stream.ChunkedWriteHandler;
  */
 public class HttpFileServer {
 
-    private static final String DEFAULT_URL = "/src/com/";
+    private static final String DEFAULT_URL = "/src/main/";
 
     public void run(final int port, final String url) throws InterruptedException {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -37,14 +37,30 @@ public class HttpFileServer {
                                     .addLast("fileServerHandler", new HttpFileServerHandler(url));
                         }
                     });
-            ChannelFuture future = bootstrap.bind("192.168.1.102", port).sync();
-            System.out.println("HTTP文件目录服务器启动，　网址是: http://192.168.1.102:" + port + url);
+            ChannelFuture future = bootstrap.bind("192.168.1.4", port).sync();
+            System.out.println("HTTP文件目录服务器启动，　网址是: http://192.168.1.4:" + port + url);
+            future.channel().closeFuture().sync();     //等待服务端监听端口关闭
         } finally {
             bossGroup.shutdownGracefully();
             workGroup.shutdownGracefully();
         }
     }
 
+
+    public static void main(String[] args) throws Exception {
+        int port = 8080;
+        if (args.length > 0) {
+            try {
+                port = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        String url = DEFAULT_URL;
+        if (args.length > 1)
+            url = args[1];
+        new HttpFileServer().run(port, url);
+    }
 
 }
 

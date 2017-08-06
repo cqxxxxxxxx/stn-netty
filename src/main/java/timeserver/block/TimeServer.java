@@ -1,4 +1,4 @@
-package chapter2.block;
+package timeserver.block;
 
 import java.io.IOException;
 import java.net.ServerSocket;

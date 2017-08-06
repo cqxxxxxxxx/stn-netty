@@ -1,4 +1,4 @@
-package chapter3;
+package timeserver.netty;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -24,7 +24,7 @@ public class TimeClient {
                     .option(ChannelOption.TCP_NODELAY, true)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new TimeClientHandler(firstMessage));
+                            ch.pipeline().addLast(new TimeClientHandler());
                         }
                     });
 

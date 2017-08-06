@@ -1,4 +1,4 @@
-package chapter2.nio;
+package timeserver.nio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -42,7 +42,7 @@ public class MultiplexerTimeServer implements Runnable {
         this.stop = true;
     }
 
-    @Override
+
     public void run() {
 
         while (!stop) {
