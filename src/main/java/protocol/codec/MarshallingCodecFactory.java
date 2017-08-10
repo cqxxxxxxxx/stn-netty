@@ -11,6 +11,7 @@ public final class MarshallingCodecFactory {
 
     /**
      * 创建Jboss Marshaller
+     *
      * @return
      * @throws IOException
      */
@@ -25,6 +26,7 @@ public final class MarshallingCodecFactory {
 
     /**
      * 创建Jboss Unmarshaller
+     *
      * @return
      * @throws IOException
      */

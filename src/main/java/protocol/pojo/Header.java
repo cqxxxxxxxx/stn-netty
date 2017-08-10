@@ -11,11 +11,11 @@ import java.util.Map;
  */
 public class Header {
 
-    private int crcCode = 0xabef0101;
-    private int length;     //消息长度
+    private int crcCode = 0xabef0101;      //占4 byte
+    private int length;     //消息长度  4个字节byte
     private long sessionId; //会话ID
-    private byte type;  //消息类型
-    private byte priority;  //消息优先级
+    private byte type;  //消息类型  1byte
+    private byte priority;  //消息优先级 1byte 0-255
     private Map<String, Object> attachment = new HashMap<>();   //附件
 
     @Override

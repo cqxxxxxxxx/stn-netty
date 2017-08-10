@@ -8,6 +8,7 @@ import protocol.pojo.NettyMessage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 消息编码  序列化Message 把对象转为byte
@@ -38,8 +39,27 @@ public final class NettyMessageEncoder extends MessageToMessageEncoder<NettyMess
         sendBuf.writeByte(msg.getHeader().getPriority());
         sendBuf.writeInt(msg.getHeader().getAttachment().size());
 
-
-
-
+        String key = null;
+        byte[] keyArray = null;
+        Object value = null;
+        for (Map.Entry<String, Object> param : msg.getHeader().getAttachment()
+                .entrySet()) {
+            key = param.getKey();
+            keyArray = key.getBytes("UTF-8");
+            sendBuf.writeInt(keyArray.length);
+            sendBuf.writeBytes(keyArray);
+            value = param.getValue();
+            marshallingEncoder.encode(value, sendBuf);
+        }
+        key = null;
+        keyArray = null;
+        value = null;
+        if (msg.getBody() != null) {
+            marshallingEncoder.encode(msg.getBody(), sendBuf);
+        } else {
+            sendBuf.writeInt(0);
+        }
+        sendBuf.setInt(4, sendBuf.readableBytes() - 8);
     }
+
 }

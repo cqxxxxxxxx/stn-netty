@@ -31,8 +31,8 @@ public class TimeServer {
             System.out.println("The time server is start in port: " + port);
             Socket socket = null;
             while (true) {
-                socket = server.accept();	//主线程在这阻塞　如果没有客户端介入
-                new Thread(new TimeServerHandler(socket)).start();	//客户端请求接入,则创建一个新的线程处理连接
+                socket = server.accept();    //主线程在这阻塞　如果没有客户端介入
+                new Thread(new TimeServerHandler(socket)).start();    //客户端请求接入,则创建一个新的线程处理连接
             }
         } finally {
             if (server != null) {

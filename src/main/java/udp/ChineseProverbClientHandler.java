@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phei.netty.protocol.udp;
+package udp;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -22,26 +22,25 @@ import io.netty.util.CharsetUtil;
 
 /**
  * @author lilinfeng
- * @date 2014年2月14日
  * @version 1.0
+ * @date 2014年2月14日
  */
 public class ChineseProverbClientHandler extends
-	SimpleChannelInboundHandler<DatagramPacket> {
-
-    @Override
-    public void messageReceived(ChannelHandlerContext ctx, DatagramPacket msg)
-	    throws Exception {
-	String response = msg.content().toString(CharsetUtil.UTF_8);
-	if (response.startsWith("谚语查询结果: ")) {
-	    System.out.println(response);
-	    ctx.close();
-	}
-    }
+        SimpleChannelInboundHandler<DatagramPacket> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
-	    throws Exception {
-	cause.printStackTrace();
-	ctx.close();
+            throws Exception {
+        cause.printStackTrace();
+        ctx.close();
+    }
+
+    @Override
+    protected void messageReceived(ChannelHandlerContext ctx, DatagramPacket msg) throws Exception {
+        String response = msg.content().toString(CharsetUtil.UTF_8);
+        if (response.startsWith("谚语查询结果: ")) {
+            System.out.println(response);
+            ctx.close();
+        }
     }
 }

@@ -19,8 +19,9 @@ import java.util.regex.Pattern;
 import static com.sun.deploy.net.HttpRequest.CONTENT_TYPE;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONNECTION;
 import static io.netty.handler.codec.http.HttpHeaders.Names.LOCATION;
+import static io.netty.handler.codec.http.HttpHeaders.isKeepAlive;
+import static io.netty.handler.codec.http.HttpHeaders.setContentLength;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
-import static io.netty.handler.codec.http.HttpUtil.isKeepAlive;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 /**
@@ -38,24 +39,25 @@ public class HttpFileServerHandler extends SimpleChannelInboundHandler<FullHttpR
         this.url = url;
     }
 
+
     /**
      * 接受到消息的时候执行
-     *
      * @param ctx
      * @param request
      * @throws Exception
      */
-    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
+    @Override
+    protected void messageReceived(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
 
-        if (!request.decoderResult().isSuccess()) {
+        if (!request.getDecoderResult().isSuccess()) {
             sendError(ctx, BAD_REQUEST);
             return;
         }
-        if (request.method() != HttpMethod.GET) {
+        if (request.getMethod() != HttpMethod.GET) {
             sendError(ctx, METHOD_NOT_ALLOWED);
             return;
         }
-        final String uri = request.uri();
+        final String uri = request.getUri();
         final String path = sanitizeUri(uri);   //sanitize vt.净化
         if (path == null) {
             sendError(ctx, FORBIDDEN);
@@ -89,10 +91,10 @@ public class HttpFileServerHandler extends SimpleChannelInboundHandler<FullHttpR
         }
         long fileLength = randomAccessFile.length();
         HttpResponse response = new DefaultHttpResponse(HTTP_1_1, OK);  //构造response
-        HttpUtil.setContentLength(response, fileLength);    //content-length 设置
+        setContentLength(response, fileLength);    //content-length 设置
         setContentTypeHeader(response, file);   //设置content-type
         if (isKeepAlive(request)) {    //判断请求头是否 Connection:keep-alive
-            response.headers().set(CONNECTION, HttpHeaderValues.KEEP_ALIVE);
+            response.headers().set(CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
         }
         ctx.write(response);    //由解码器处理，发送响应消息 异步
         ChannelFuture sendFileFuture;
@@ -121,8 +123,8 @@ public class HttpFileServerHandler extends SimpleChannelInboundHandler<FullHttpR
         if (!isKeepAlive(request)) {
             lastContentFuture.addListener(ChannelFutureListener.CLOSE);
         }
-
     }
+
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
@@ -237,6 +239,7 @@ public class HttpFileServerHandler extends SimpleChannelInboundHandler<FullHttpR
         response.headers().set(CONTENT_TYPE,
                 mimeTypesMap.getContentType(file.getPath()));
     }
+
 
 
 }
